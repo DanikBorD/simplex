@@ -16,6 +16,8 @@ namespace simplex_method
             string path = @"D:\simplex.txt"; // !!! путь до файла с исходниками
             var rows = new List<string>();
             var columns = new List<string>();
+            int coef = 1;
+            int dop_ind = 0;
 
             if (System.IO.File.Exists(path))
                 text_table = System.IO.File.ReadAllText(path);
@@ -26,22 +28,52 @@ namespace simplex_method
                 rows.RemoveAt(rows.IndexOf(rows.Last()));
 
             columns = rows[0].Split(',').ToList();
-            double[,] table = new double[rows.Count, columns.Count];
+            double[,] table_tmp = new double[rows.Count, columns.Count - 1];
 
             for (var str = 0; str < rows.ToArray().Length; str++)
+            {
+                if (rows[str].Contains(">=") || rows[str].Contains("max"))
+                    coef = -1;
+
                 for (var col = 0; col < columns.ToArray().Length; col++)
-                    table[str, col] = Convert.ToDouble(rows[str].Split(',')[col]);
+                {
+                    if(Double.TryParse(rows[str].Split(',')[col], out table_tmp[str, col - dop_ind]))
+                    {
+                        table_tmp[str, col - dop_ind] = table_tmp[str, col - dop_ind] * coef;
+                    }
+                    else
+                    {
+                        dop_ind = 1;
+                    }
+                }
 
-            //double[,] table = { {25, -3,  5}, (25 >= -3x1 + 5x2)
-            //                    {30, -2,  5}, 
-            //                    {10,  1,  0}, 
-            //                    { 6,  3, -8}, 
-            //                    { 0, -6, -5} }; // целевое уравнение вконце
+                dop_ind = 0;           
+                coef = 1;
+            }
 
-            Console.WriteLine("Исходная система:");
+            double[,] table = new double[rows.Count, columns.Count - 1];
+
+            for (var i = 0; i < rows.Count; i++)
+            {
+                table[i, 0] = table_tmp[i, columns.Count - 2];
+            }
+
+            for (var i = 0; i < rows.Count; i++)
+                for (var j = 1; j < rows.Count -2; j++)
+                {
+                    table[i, j] = table_tmp[i, j-1];
+                }
+
+                    //double[,] table = { {25, -3,  5}, (25 >= -3x1 + 5x2)
+                    //                    {30, -2,  5}, 
+                    //                    {10,  1,  0}, 
+                    //                    { 6,  3, -8}, 
+                    //                    { 0, -6, -5} }; // целевое уравнение вконце
+
+                    Console.WriteLine("Исходная система:");
             for (int i = 0; i < table.GetLength(0); i++)
             {
-                for (int j = 0; j < table.GetLength(1); j++)
+                for (int j = 0; j < table_tmp.GetLength(1); j++)
                     Console.Write(table[i, j] + " ");
                 Console.WriteLine();
             }
