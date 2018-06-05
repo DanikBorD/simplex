@@ -34,10 +34,11 @@ namespace simplex_method
             {
                 if (rows[str].Contains(">=") || rows[str].Contains("max"))
                     coef = -1;
-
+                rows[str] = rows[str].Trim();
                 for (var col = 0; col < columns.ToArray().Length; col++)
                 {
-                    if(Double.TryParse(rows[str].Split(',')[col], out table_tmp[str, col - dop_ind]))
+                    rows[str].Split(',')[col] = rows[str].Split(',')[col].Trim();
+                    if (Double.TryParse(rows[str].Split(',')[col], out table_tmp[str, col - dop_ind]))
                     {
                         table_tmp[str, col - dop_ind] = table_tmp[str, col - dop_ind] * coef;
                     }
@@ -59,7 +60,7 @@ namespace simplex_method
             }
 
             for (var i = 0; i < rows.Count; i++)
-                for (var j = 1; j < rows.Count -2; j++)
+                for (var j = 1; j < columns.Count -1; j++)
                 {
                     table[i, j] = table_tmp[i, j-1];
                 }
@@ -73,7 +74,7 @@ namespace simplex_method
                     Console.WriteLine("Исходная система:");
             for (int i = 0; i < table.GetLength(0); i++)
             {
-                for (int j = 0; j < table_tmp.GetLength(1); j++)
+                for (int j = 0; j < table.GetLength(1); j++)
                     Console.Write(table[i, j] + " ");
                 Console.WriteLine();
             }
