@@ -1,0 +1,6 @@
+D:\C#\simplex_method\simplex_method\bin\Release\simplex_method.exe.config
+D:\C#\simplex_method\simplex_method\bin\Release\simplex_method.exe
+D:\C#\simplex_method\simplex_method\bin\Release\simplex_method.pdb
+D:\C#\simplex_method\simplex_method\obj\Release\simplex_method.csprojResolveAssemblyReference.cache
+D:\C#\simplex_method\simplex_method\obj\Release\simplex_method.exe
+D:\C#\simplex_method\simplex_method\obj\Release\simplex_method.pdb

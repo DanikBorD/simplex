@@ -52,6 +52,14 @@ namespace simplex_method
                 coef = 1;
             }
 
+            for (int i = 0; i < table_tmp.GetLength(0); i++)
+            {
+                for (int j = 0; j < table_tmp.GetLength(1); j++)
+                    Console.Write(table_tmp[i, j] + " ");
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
             double[,] table = new double[rows.Count, columns.Count - 1];
 
             for (var i = 0; i < rows.Count; i++)
